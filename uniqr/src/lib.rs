@@ -2,7 +2,7 @@ use clap::{App, Arg};
 use std::{
     error::Error,
     fs::File,
-    io::{self, BufRead, BufReader},
+    io::{self, BufRead, BufReader, Write},
 };
 
 
@@ -13,28 +13,43 @@ pub fn run(config: Config) -> MyResult<()> {
     let mut file = open(&config.in_file)
         .map_err(|e| format!("{}: {}", config.in_file, e))?;
         let mut line = String::new();
-        let mut line2 = String::new();
-        let mut line3 = String::new();
-        let mut count = 1;
-        let mut counts = HashMap::new();
+        let mut previous = String::new();
+        let mut count: u64 = 0;
+
+        let mut out_file: Box<dyn Write> = match &config.out_file {
+            Some(out_name) => Box::new(File::create(out_name)?),
+            _ => Box::new(io::stdout()),
+        };
+
+        let mut print = |count: u64, text: &str| -> MyResult<()> {
+            if count > 0 {
+                if config.count {
+                    write!(out_file, "{:>4} {}", count, text)?;
+                } else {
+                    write!(out_file, "{}", text)?;
+                }
+            };
+            Ok(())
+        };
+
         loop{
             let bytes = file.read_line(&mut line)?;
             if bytes == 0 {
                 break;
             }
-            counts.insert()
-            if line2 == line {
-                count += 1;
-            } else {
-                print!("{} {}", count, line);
+
+
+
+            if line.trim_end() != previous.trim_end() {
+                print(count, &previous)?;
+                previous = line.clone();
                 count = 0;
             }
-            
-            line2 = line.clone();
-            line3 = line2.clone();
+            count += 1;
             line.clear();
         }
 
+        print(count, &previous)?;
     Ok(())
 }
 

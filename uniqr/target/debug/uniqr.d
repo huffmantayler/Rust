@@ -1,1 +1,1 @@
-/home/vagrant/Rust/uniqr/target/debug/uniqr: /home/vagrant/Rust/uniqr/src/lib.rs /home/vagrant/Rust/uniqr/src/main.rs
+/Users/taylorhuffman/Desktop/RustProjects/rust-cli/uniqr/target/debug/uniqr: /Users/taylorhuffman/Desktop/RustProjects/rust-cli/uniqr/src/lib.rs /Users/taylorhuffman/Desktop/RustProjects/rust-cli/uniqr/src/main.rs
